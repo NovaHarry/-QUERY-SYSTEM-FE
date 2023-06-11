@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
@@ -6,7 +6,6 @@ import { url } from '../App';
 import {toast} from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Dashboard from './DashBoard';
-
 
 const Login = () => {
   let [email, setEmail] = useState("");
@@ -21,8 +20,9 @@ const Login = () => {
       let res = await axios.post(`${url}/users/login`, payload);
       toast.success(res.data.message);
       sessionStorage.setItem('token', res.data.token);
-     navigate('/queries');
+      navigate('/queries');
      sessionStorage.setItem('loggedEmail' , email)
+     sessionStorage.setItem('userName', res.data.userByID.userName);
     }
     catch (error){
       toast.error(error.response.data.message);
@@ -44,11 +44,14 @@ const Login = () => {
   }
 
   return (
-    <Dashboard title= "Login Page">
+    <Dashboard>
+      <div className="nav-bar">
+       <h1 className='login'>Login Page</h1>
+      </div>
     <div className='login-wrapper'>
     <Form>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
+        <Form.Label >Email address</Form.Label>
         <Form.Control type="email" placeholder="Enter email" onChange={(e)=>setEmail(e.target.value)}/>
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.

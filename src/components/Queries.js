@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import Dashboard from './DashBoard';
 import Button from 'react-bootstrap/esm/Button';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+  
 
 const Queries = () => {
 
@@ -12,11 +14,19 @@ const Queries = () => {
   let navigate = useNavigate();
   let token = sessionStorage.getItem('token');
   let[query, setQuery] = useState("");
-
+  let userNames = sessionStorage.getItem('userName')
 
   let logout = ()=>{
-    sessionStorage.clear();
-    navigate('/');
+    if (window.confirm("Are you sure you want to logout?")){
+      var solved = "You pressed OK!";
+    if(solved == "You pressed OK!"){
+      sessionStorage.clear();
+      navigate('/');
+    }
+  }
+  else {
+    solved = "You pressed Cancel!";
+  }
   }
 
   const handleLogins = async()=>{
@@ -38,8 +48,7 @@ const Queries = () => {
 
   const handleQuery = async (ID)=>{
     try {
-      let res = await axios.get(`${url}/queries/queryID/${ID}`,{
-      })
+      let res = await axios.get(`${url}/queries/queryID/${ID}`)
       toast.success(res.data.message);
       setQuery(res.data.queryID);
     } catch (error) {
@@ -51,35 +60,28 @@ const Queries = () => {
     }
   }
 
-  const handleSolve = async()=>{
-    // try {
-    //   let res = await axios.get(`${url}/queries/queryID/${ID}`,{
-    //   })
-    //   toast.success(res.data.message);
-    //   setQuery(res.data.queryID);
-    // } catch (error) {
-    //   if(error.response.status === 401 || error.response.status === 400)
-    //   {
-    //     toast.error(error.response.data.message);
-    //   }
-    //   console.log(error)
-    // }
+  const handleSolve = async(ID)=>{
     if (window.confirm("Are you sure you want to close this query?")){
-      var txt = "You pressed OK!";
+        var solved = "You pressed OK!";
+      if(solved == "You pressed OK!"){
+        solved = "Resolved"
+        try {
+          let res = await axios.put(`${url}/queries/query-resolve/${ID}`)
+          toast.success(res.data.message)
+        } catch (error) {
+          if(error.response.status === 401 || error.response.status === 400)
+          {
+            toast.error(error.response.data.message);
+          }
+          console.log(error)
+        }
+      }
     }
     else {
-      txt = "You pressed Cancel!";
+      solved = "You pressed Cancel!";
+      
     }
-    
 }
-    
-
-  
-
-
-
-
-  
   useEffect(()=>{
     if(token){
       handleLogins()
@@ -91,10 +93,18 @@ const Queries = () => {
   },[data])
 
   return (
-    <Dashboard title ="My Queries">
+    <Dashboard>
+      <div className="nav-bar">
+                <h1 className='nav-text'>My Queries</h1>
+                <div className="profile">
+                <span>{userNames}</span><AccountCircleIcon sx={{ fontSize: 60 }} className="icons" 
+                onClick={()=>logout()}
+                />
+                </div>
+      </div>
     <div className="main">
       <div className='create-query'>
-        <button className='create-btn'>+ Create Query</button>
+        <button className='create-btn' onClick={()=>navigate('/queries/addquery')}>+ Create Query</button>
       </div>
       <div className='query-board'>
       <div className='queryGap'>
@@ -105,7 +115,7 @@ const Queries = () => {
                 
                 <div className='queryData' >
                 <span className='queryTitle'>{e.queryId} - <span>{e.title}</span></span>
-                {e.resolved == 'unresolved' ? <span className="resolved" style={{backgroundColor:"#d3f6ff",color:"#0082ac"}}>{e.resolved}</span> : <span style={{backgroundColor:"#d6ffe4" , color:"#06aa44"}}></span>}
+                {e.resolved == 'Unresolved' ? <span className="resolved" style={{backgroundColor:"#d3f6ff",color:"#0082ac"}}>{e.resolved}</span> : <span className="resolved" style={{backgroundColor:"#d6ffe4" , color:"#06aa44"}}>{e.resolved}</span>}
                 </div>
                 <div className='queryData'>
                 <span className='category'>{e.category}</span>
@@ -155,7 +165,7 @@ const Queries = () => {
       </div>
       <div className='solved'>
         <Button variant="success"
-        onClick={()=>handleSolve()}
+        onClick={()=>handleSolve(query.queryId)}
         >Solved</Button>
       </div>
       

@@ -36,7 +36,7 @@ function Register() {
   
   return (
     <div className='login-wrapper'>
-      <h1 style={{"textAlign":"center"}}>Register Page</h1>
+      <h1 className='nav-text' style={{"textAlign":"center"}}>Register Page</h1>
     <Form>
 
     <Form.Group className="mb-3" controlId="formBasicEmail">

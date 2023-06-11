@@ -32,7 +32,7 @@ function NewPassword() {
   return (
 
     <div className='login-wrapper'>
-      <h1 style={{"textAlign":"center"}}>Reset your Password Page</h1>
+      <h1 className='nav-text' style={{"textAlign":"center"}}>Reset your Password Page</h1>
     <Form>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Enter New Password</Form.Label>

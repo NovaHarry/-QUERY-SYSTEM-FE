@@ -7,6 +7,7 @@ import NewPassword from './components/NewPassword';
 import Queries from './components/Queries';
 import { useState } from 'react';
 import Dashboard from './components/DashBoard';
+import CreateQuery from './components/CreateQuery';
 
 
 export const url = 'http://localhost:2000';
@@ -25,7 +26,7 @@ function App() {
       <Route path='/users/forgotpassword/:email' element = {<ForgotPassword/>}/>
       <Route path='/users/update-password/:randomString' element = {<NewPassword/>}/>
       <Route path='/queries' element = {<Queries/>}/>
-
+      <Route path='/queries/addquery' element = {<CreateQuery/>}/>
     </Routes>
     </BrowserRouter>
     </>
