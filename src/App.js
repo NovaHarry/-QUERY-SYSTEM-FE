@@ -9,7 +9,7 @@ import { useState } from 'react';
 import CreateQuery from './components/CreateQuery';
 
 
-export const url = 'https://query-system-be.onrender.com';
+ export const url = 'https://query-system-be.onrender.com';
 
 function App() {
 
