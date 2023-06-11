@@ -1,16 +1,15 @@
 import './App.css';
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import ForgotPassword from './components/ForgotPassword';
 import NewPassword from './components/NewPassword';
 import Queries from './components/Queries';
 import { useState } from 'react';
-import Dashboard from './components/DashBoard';
 import CreateQuery from './components/CreateQuery';
 
 
-export const url = 'http://localhost:2000';
+export const url = 'https://query-system-be.onrender.com';
 
 function App() {
 
